@@ -134,6 +134,8 @@ public class Main {
 		
 		if(Routing_Table.routingList == null){
 			Routing_Table.routingList = new ClientInfo[socket_stop - socket_start + 1];
+			Routing_Table.setSocketStart(Main.socket_start);
+			Routing_Table.setSocketStop(Main.socket_stop);
 			System.out.println("Server Main --> Server started");
 		}
 		
