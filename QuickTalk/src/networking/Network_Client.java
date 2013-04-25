@@ -54,16 +54,73 @@ public class Network_Client extends Thread{
 					+ "the connection to: server.");
 			System.exit(1);
 		}
-
-		BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-				System.in));
 		
-
-		while(!in.equals("connect")){
-			out.println(name);
+		String inputLine = null;
+		try {
+			while(!in.ready()){
+				System.out.println("Waiting for connect");
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		try {
+			if(in.readLine().equals("Connect")){
+				out.println(name);
+				System.out.println("here");
+			}
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
 		}
 		
+		
+		while (true) {
+			try {
+				if (in.ready()) {
+					inputLine = in.readLine();
+					
+					// Once a line is read in from a client create a serialized message 
+					talk.add(creteMessage(inputLine));
+					inputLine = null;
+				
+				}
 
+				while (!listen.isEmpty()) {
+					Serialized_Message outputLine = null;
+					try {
+						System.out.println("Sending message : ");
+						//Receive a message from the server main.
+						outputLine = listen.take();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(Routing_Table.existOnThisSocket(this.socket_number,outputLine.getTo())){
+						out.println(sendMessage(outputLine));
+					}
+					while (outputLine != null) {
+						outputLine = null;
+					}
+
+				}
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		/*
 		 * try { out.close(); in.close(); stdIn.close(); echoSocket.close(); }
 		 * catch (IOException e) { // TODO Auto-generated catch block
@@ -74,9 +131,23 @@ public class Network_Client extends Thread{
 
 	
 
-	private static void sendMessage(String message) {
-		out.println(message);
-
+	/*
+	 * Creates a message to send in the form of a line
+	 */
+	private String sendMessage(Serialized_Message outputLine) {
+		
+		return outputLine.getTo()+" : "+outputLine.getFrom()+" : "+outputLine.getMessage();
 	}
+
+	/*
+	 * Creates a message from a read line from a client.  
+	 * The line format:  <name of recipient | group | broadcast> : <name of sender> : Message 
+	 */
+	private Serialized_Message creteMessage(String inputLine) {
+		String[] parsed = inputLine.split("\\:");
+		Serialized_Message message = new Serialized_Message(parsed[0].trim(),parsed[1].trim(),parsed[2].trim());
+		return message;
+	}
+	
 
 }

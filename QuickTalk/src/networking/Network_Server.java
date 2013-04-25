@@ -83,6 +83,7 @@ public class Network_Server extends Thread {
 			if (in.ready()) {
 				System.out.println("HERE 2");
 				String message = in.readLine();
+				System.out.println("Message from client: " + message);
 				Routing_Table.addListing(message,this.socket_number);
 			}
 		} catch (IOException e2) {
