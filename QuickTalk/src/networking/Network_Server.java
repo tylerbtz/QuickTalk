@@ -71,9 +71,19 @@ public class Network_Server extends Thread {
 		Serialized_Message outputLine = null;
 
 		out.println("Connect");
-		try {
+		try {System.out.println("HERE 1");
 			while(!in.ready()){
-				Routing_Table.addListing(in.readLine(),this.socket_number);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (in.ready()) {
+				System.out.println("HERE 2");
+				String message = in.readLine();
+				Routing_Table.addListing(message,this.socket_number);
 			}
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
@@ -81,6 +91,7 @@ public class Network_Server extends Thread {
 		}
 		while (true) {
 			try {
+				System.out.println("HERE 3");
 				if (in.ready()) {
 					inputLine = in.readLine();
 					

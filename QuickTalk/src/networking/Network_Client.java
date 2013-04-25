@@ -58,15 +58,7 @@ public class Network_Client extends Thread{
 		BufferedReader stdIn = new BufferedReader(new InputStreamReader(
 				System.in));
 		
-		try {
-			while(!in.ready()){
-				Routing_Table.addListing(in.readLine(),this.socket_number);
-			}
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-	
+
 		while(!in.equals("connect")){
 			out.println(name);
 		}
