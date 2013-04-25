@@ -17,6 +17,7 @@ public class Main {
 	private static int socket_stop = 0;
 	private static LinkedBlockingQueue<Serialized_Message> listen;
 	private static LinkedBlockingQueue<Serialized_Message> talk;
+	
 	/*
 	 * Main function that controls how the program is to run.
 	 * @param args An array of the passed in arguments from the command line call
@@ -115,9 +116,7 @@ public class Main {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
-		
+		}	
 	}
 
 
@@ -125,11 +124,18 @@ public class Main {
 	private static void startServer(String[] args) {
 		List<Thread> threads = new ArrayList<Thread>();
 		
+		
+		
 		// Send server started message and start an instance of the base
 		System.out.println("Server Main --> Server started");
 
 		Main.setSocketStart(Integer.parseInt(args[1]));
 		Main.setSocketStop(Integer.parseInt(args[2]));
+		
+		if(Routing_Table.routingList == null){
+			Routing_Table.routingList = new ClientInfo[socket_stop - socket_start + 1];
+			System.out.println("Server Main --> Server started");
+		}
 		
 		listen = new LinkedBlockingQueue<Serialized_Message>();
 		talk = new LinkedBlockingQueue<Serialized_Message>();
