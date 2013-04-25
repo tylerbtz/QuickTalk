@@ -53,42 +53,7 @@ public class Routing_Table {
 	public static void setSocketStart(int number) {
 		Routing_Table.socket_start = number;
 	}
-/////////////////////
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	////////////////////////
+
 	/*
 	 * set the stopping value for the servers sockets
 	 */
