@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import application.Routing_Table;
 import application.Serialized_Message;
 
 public class Network_Client extends Thread{
@@ -24,7 +25,6 @@ public class Network_Client extends Thread{
 		this.listen = listen_q;
 		this.talk = talk_q;
 		this.name = name_q;
-		
 	}
 	
 	private void setIpAddress(String string) {
@@ -57,6 +57,15 @@ public class Network_Client extends Thread{
 
 		BufferedReader stdIn = new BufferedReader(new InputStreamReader(
 				System.in));
+		
+		try {
+			while(!in.ready()){
+				Routing_Table.addListing(in.readLine(),this.socket_number);
+			}
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 	
 		while(!in.equals("connect")){
 			out.println(name);
