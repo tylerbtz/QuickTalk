@@ -1,6 +1,9 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import networking.Network_Client;
 
@@ -11,6 +14,8 @@ public class Routing_Table {
 	private static int socket_stop = 0;
 
 	public static ClientInfo[] routingList;
+	
+	private static Map<Integer,ArrayList<String>> table = new HashMap<Integer, ArrayList<String>>();
 
 	// needs to check a table to see if the to is on the socket number
 	public static boolean existOnThisSocket(int socket_number, String to) {
@@ -23,6 +28,8 @@ public class Routing_Table {
 			}
 		}
 		return false;
+		
+		
 	}
 
 	public static int getSocketNumber(String readLine) {
@@ -45,9 +52,14 @@ public class Routing_Table {
 		
 	}
 
-	public static void addListing(String readLine, int socket_number) {
+	public static void addListing(String name, int socket_number) {
 		Routing_Table.routingList[socket_number - Routing_Table.socket_start] = new ClientInfo(
-				readLine);
+				name);
+		if(Routing_Table.table.get(socket_number)==null){
+			Routing_Table.table.put(socket_number, new ArrayList<String>());
+		}
+		
+		Routing_Table.table.get(socket_number).add(name);
 	}
 
 	public static void setSocketStart(int number) {
