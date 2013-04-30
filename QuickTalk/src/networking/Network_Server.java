@@ -71,7 +71,7 @@ public class Network_Server extends Thread {
 		Serialized_Message outputLine = null;
 
 		out.println("Connect");
-		try {System.out.println("HERE 1");
+		try {
 			while(!in.ready()){
 				try {
 					Thread.sleep(1000);
@@ -81,7 +81,7 @@ public class Network_Server extends Thread {
 				}
 			}
 			if (in.ready()) {
-				System.out.println("HERE 2");
+				
 				String message = in.readLine();
 				System.out.println("Message from client: " + message);
 				Routing_Table.addListing(message,this.socket_number);
@@ -92,11 +92,11 @@ public class Network_Server extends Thread {
 		}
 		while (true) {
 			try {
-				System.out.println("HERE 3");
+
 				if (in.ready()) {
 					inputLine = in.readLine();
 					
-					
+					System.out.println("Message reciever from a client "+ inputLine);
 					// Once a line is read in from a client create a serialized message 
 					talk.add(creteMessage(inputLine));
 					inputLine = null;
@@ -112,7 +112,9 @@ public class Network_Server extends Thread {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					System.out.println("Message trying to send on socket " + this.socket_number + " for " + outputLine.getTo());
 					if(Routing_Table.existOnThisSocket(this.socket_number,outputLine.getTo())){
+						System.out.println("Message is sent");
 						out.println(sendMessage(outputLine));
 					}
 					while (outputLine != null) {
@@ -151,8 +153,9 @@ public class Network_Server extends Thread {
 	 * The line format:  <name of recipient | group | broadcast> : <name of sender> : Message 
 	 */
 	private Serialized_Message creteMessage(String inputLine) {
-		String[] parsed = inputLine.split("\\:");
+		String[] parsed = inputLine.split(":");
 		Serialized_Message message = new Serialized_Message(parsed[0].trim(),parsed[1].trim(),parsed[2].trim());
+		System.out.println("new Message to " + message.getTo());
 		return message;
 	}
 }

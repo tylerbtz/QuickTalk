@@ -14,14 +14,21 @@ public class Serialized_Message implements Serializable{
     }
 
     // The constructor for the given message
-    public Serialized_Message(String id, String from, String msgText) {
+    public Serialized_Message(String to, String from, String msgText) {
     	setTo(to);
     	setFrom(from);
         setMsgText(msgText);
 	}
     
     public static Serialized_Message encodeMessage(String raw_message){
-    	
+    	String[] parts = raw_message.split(":");
+    	if(parts.length == 1){
+    		return new Serialized_Message("broadcast", "default", parts[0].trim());
+    	}else if(parts.length == 2){
+    		return new Serialized_Message(parts[0].trim(), "default", parts[1].trim());
+    	}else if(parts.length == 3){
+    		return new Serialized_Message(parts[0].trim(), parts[1].trim(), parts[2].trim());
+    	}
     	return new Serialized_Message();
     }
 

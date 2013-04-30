@@ -85,7 +85,7 @@ public class Network_Client extends Thread{
 			try {
 				if (in.ready()) {
 					inputLine = in.readLine();
-					
+					System.out.println("message recieved");
 					// Once a line is read in from a client create a serialized message 
 					talk.add(creteMessage(inputLine));
 					inputLine = null;
@@ -95,16 +95,15 @@ public class Network_Client extends Thread{
 				while (!listen.isEmpty()) {
 					Serialized_Message outputLine = null;
 					try {
-						System.out.println("Sending message : ");
 						//Receive a message from the server main.
 						outputLine = listen.take();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					if(Routing_Table.existOnThisSocket(this.socket_number,outputLine.getTo())){
-						out.println(sendMessage(outputLine));
-					}
+					
+					out.println(sendMessage(outputLine));
+					System.out.println("Message sent");
 					while (outputLine != null) {
 						outputLine = null;
 					}
@@ -135,8 +134,9 @@ public class Network_Client extends Thread{
 	 * Creates a message to send in the form of a line
 	 */
 	private String sendMessage(Serialized_Message outputLine) {
-		
-		return outputLine.getTo()+" : "+outputLine.getFrom()+" : "+outputLine.getMessage();
+		String message = outputLine.getTo() +" : "+outputLine.getFrom()+" : "+outputLine.getMessage();
+		System.out.println("Sending message: " + message);
+		return message;
 	}
 
 	/*

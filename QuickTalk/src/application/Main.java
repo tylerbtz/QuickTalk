@@ -145,7 +145,7 @@ public class Main {
 		
 		
 		for (int i = Main.socket_start; i <= Main.socket_stop; i++) {
-			threads.add(new Network_Server(i, listen, talk));
+			threads.add(new Network_Server(i, talk, listen));
 			
 		}
 		for (int j = 0; j < threads.size(); j++) {
@@ -156,11 +156,14 @@ public class Main {
 		
 
 		while (true) {
+	
 			while (!listen.isEmpty()) {
 				try {
 					System.out
 							.println("Server Main -> Recieved a message from a client.");
 					from_client = listen.take();
+					System.out
+					.println("Server Main -> Recieved a message from a client." + from_client.getMessage());
 					sendMessage(from_client);
 				} catch (InterruptedException e) {
 					
@@ -180,6 +183,7 @@ public class Main {
 	 * Send a message to the attached threads
 	 */
 	private static void sendMessage(Serialized_Message from_client) {
+		System.out.println("Sending the message" + from_client.getMessage());
 		talk.add(from_client);
 		
 	}
