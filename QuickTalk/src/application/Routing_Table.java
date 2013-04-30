@@ -19,13 +19,23 @@ public class Routing_Table {
 
 	// needs to check a table to see if the to is on the socket number
 	public static boolean existOnThisSocket(int socket_number, String to) {
-		if (socket_number >= Routing_Table.socket_start
+		/*
+		  
+		 if (socket_number >= Routing_Table.socket_start
 				&& socket_number <= Routing_Table.socket_stop) {
 			if (Routing_Table.routingList[socket_number
 					- Routing_Table.socket_start].equals(to)) {
 				return true;
 
 			}
+		}
+		return false;
+		*/
+		
+		
+		ArrayList<String> names = Routing_Table.table.get(socket_number);
+		if(names.contains(to)){
+			return true;
 		}
 		return false;
 		

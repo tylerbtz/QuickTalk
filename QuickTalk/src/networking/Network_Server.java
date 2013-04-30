@@ -112,10 +112,8 @@ public class Network_Server extends Thread {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					System.out.println("Message trying to send on socket " + this.socket_number + " for " + outputLine.getTo());
-					System.out.println(Routing_Table.existOnThisSocket(this.socket_number,outputLine.getTo()));
+
 					if(Routing_Table.existOnThisSocket(this.socket_number,outputLine.getTo())){
-						System.out.println("Message is sent");
 						out.println(sendMessage(outputLine));
 					}
 					while (outputLine != null) {
